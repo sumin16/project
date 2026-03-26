@@ -1,1004 +1,1263 @@
 <!DOCTYPE html>
-<!-- saved from url=(0060)file:///C:/Users/USER/Downloads/withbuddy-personas-v2_4.html -->
-<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>위드버디 — 페르소나 &amp; 시나리오 문서</title>
-  <link href="./With Buddy. 페르소나 &amp; 유저 저니맵_files/css2" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WithBuddy — 협업 파트 완전 이해 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:      #0d1117;
+    --bg2:     #161b22;
+    --bg3:     #1c2230;
+    --border:  #30363d;
+    --border2: #21262d;
+    --mint:    #2bcd9e;
+    --mint-d:  #1a9e77;
+    --mint-lt: rgba(43,205,158,.10);
+    --blue:    #58a6ff;
+    --blue-lt: rgba(88,166,255,.10);
+    --orange:  #f78166;
+    --orange-lt: rgba(247,129,102,.10);
+    --yellow:  #e3b341;
+    --yellow-lt: rgba(227,179,65,.10);
+    --purple:  #bc8cff;
+    --purple-lt: rgba(188,140,255,.10);
+    --red:     #ff7b72;
+    --text:    #e6edf3;
+    --muted:   #7d8590;
+    --mono:    'IBM Plex Mono', monospace;
+    --sans:    'Pretendard', 'Noto Sans KR', sans-serif;
+  }
 
-    :root {
-      --bg: #F7F6F2;
-      --surface: #FFFFFF;
-      --primary: #1B5E42;
-      --primary-mid: #2D7A58;
-      --primary-light: #E4F4ED;
-      --accent: #E07B39;
-      --accent-light: #FDF0E7;
-      --manager: #5B35B0;
-      --manager-light: #EEE9FF;
-      --text: #18181B;
-      --text-muted: #71717A;
-      --border: #E4E4E7;
-      --warning: #D97706;
-      --warning-light: #FFFBEB;
-    }
+  * { margin:0; padding:0; box-sizing:border-box; }
 
-    html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
 
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-    /* ── NAV ── */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(247,246,242,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 40px;
-      display: flex; align-items: center; gap: 32px;
-      height: 56px;
-    }
-    .nav-logo {
-      font-family: 'Fraunces', serif;
-      font-size: 18px; font-weight: 700;
-      color: var(--primary);
-      margin-right: auto;
-    }
-    .nav a {
-      font-size: 13px; font-weight: 500; color: var(--text-muted);
-      text-decoration: none; padding: 4px 0;
-      border-bottom: 2px solid transparent;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .nav a:hover { color: var(--primary); border-color: var(--primary); }
+  /* ── HEADER ── */
+  .site-header {
+    border-bottom: 1px solid var(--border2);
+    padding: 48px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(43,205,158,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--mint); background: var(--mint-lt);
+    border: 1px solid rgba(43,205,158,.3);
+    padding: 4px 14px; border-radius: 999px;
+    margin-bottom: 20px; position: relative;
+  }
+  .header-chip::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--mint); border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    /* ── HERO ── */
-    .hero {
-      max-width: 1160px; margin: 0 auto;
-      padding: 72px 40px 48px;
-      display: grid; grid-template-columns: 1fr auto;
-      gap: 40px; align-items: center;
-    }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--primary-light); color: var(--primary);
-      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; padding: 5px 14px; border-radius: 999px;
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(36px, 5vw, 60px);
-      line-height: 1.1; letter-spacing: -0.02em;
-      margin-bottom: 18px;
-    }
-    .hero h1 em { font-style: italic; color: var(--primary); }
-    .hero p { font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 520px; }
-    .hero-stats {
-      display: flex; flex-direction: column; gap: 16px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 28px 32px; min-width: 200px;
-    }
-    .stat-item { text-align: center; }
-    .stat-num {
-      font-family: 'Fraunces', serif;
-      font-size: 32px; font-weight: 700; color: var(--primary);
-      line-height: 1;
-    }
-    .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
-    .stat-divider { height: 1px; background: var(--border); }
+  .site-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800; line-height: 1.2;
+    position: relative;
+  }
+  .site-header h1 .acc { color: var(--mint); }
+  .site-header .sub {
+    margin-top: 12px; color: var(--muted); font-size: 1rem;
+    position: relative;
+  }
 
-    /* ── SECTION WRAPPER ── */
-    .container { max-width: 1160px; margin: 0 auto; padding: 0 40px; }
-    .section { padding: 64px 0; }
-    .section-header {
-      display: flex; align-items: center; gap: 14px;
-      margin-bottom: 32px;
-    }
-    .section-pill {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 4px 13px; border-radius: 999px;
-    }
-    .pill-newbie { background: var(--primary-light); color: var(--primary); }
-    .pill-manager { background: var(--manager-light); color: var(--manager); }
-    .pill-neutral { background: #F1F5F9; color: #475569; }
-    .pill-scenario { background: var(--accent-light); color: var(--accent); }
-    .section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-    .section-count { margin-left: auto; font-size: 13px; color: var(--text-muted); }
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border2);
+    overflow-x: auto;
+    padding: 0 24px;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,.92);
+    backdrop-filter: blur(12px);
+  }
+  .nav-tabs::-webkit-scrollbar { height: 0; }
+  .tab-btn {
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    color: var(--muted); background: none; border: none;
+    padding: 14px 18px;
+    border-bottom: 2px solid transparent;
+    cursor: pointer; white-space: nowrap;
+    transition: color .2s, border-color .2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--mint); border-bottom-color: var(--mint); }
 
-    /* ── RESEARCH BANNER ── */
-    .research-banner {
-      background: var(--warning-light);
-      border: 1px solid #FDE68A;
-      border-radius: 16px; padding: 28px 32px;
-      margin-bottom: 64px;
-    }
-    .research-banner h3 {
-      font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--warning); margin-bottom: 18px;
-    }
-    .research-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-    }
-    .research-item {
-      display: flex; gap: 10px; align-items: flex-start;
-      font-size: 13px; line-height: 1.65; color: #78350F;
-    }
-    .r-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-    .research-item strong { font-weight: 700; }
+  /* ── CONTENT WRAPPER ── */
+  .content { max-width: 920px; margin: 0 auto; padding: 48px 24px 80px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
 
-    /* ── ONBOARDING TIMELINE ── */
-    .timeline-row {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; overflow: hidden; margin-bottom: 64px;
-    }
-    .tl-step {
-      padding: 22px 20px;
-      border-right: 1px solid var(--border);
-    }
-    .tl-step:last-child { border-right: none; }
-    .tl-tag {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--primary-mid); margin-bottom: 8px;
-    }
-    .tl-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-    .tl-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+  /* ── SECTION EYEBROW ── */
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--mint); margin-bottom: 8px;
+  }
+  .sec-title {
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 800; margin-bottom: 28px;
+    line-height: 1.3;
+  }
+  .sec-title .num { color: var(--mint); font-family: var(--mono); font-size: .8em; margin-right: 6px; }
 
-    /* ── PERSONA GRID ── */
-    .persona-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 24px;
-    }
-    .persona-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 30px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-      transition: transform 0.2s, box-shadow 0.2s;
-      animation: fadeUp 0.5s ease both;
-    }
-    .persona-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.09); }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .persona-card:nth-child(1) { animation-delay: 0.05s; }
-    .persona-card:nth-child(2) { animation-delay: 0.10s; }
-    .persona-card:nth-child(3) { animation-delay: 0.15s; }
+  /* ── CARDS ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-mint   { background: var(--mint); }
+  .dot-blue   { background: var(--blue); }
+  .dot-orange { background: var(--orange); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-purple { background: var(--purple); }
+  .dot-red    { background: var(--red); }
 
-    .card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-    .avatar {
-      width: 52px; height: 52px; border-radius: 15px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
-    }
-    .av-newbie { background: var(--primary-light); }
-    .av-manager { background: var(--manager-light); }
-    .card-name { font-size: 17px; font-weight: 700; margin-bottom: 3px; }
-    .card-meta { font-size: 12px; color: var(--text-muted); }
-    .card-badge {
-      margin-left: auto; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.05em; padding: 4px 12px; border-radius: 999px; flex-shrink: 0;
-    }
-    .badge-newbie { background: var(--primary-light); color: var(--primary); }
-    .badge-manager { background: var(--manager-light); color: var(--manager); }
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 640px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
 
-    .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  /* ── PART CARD ── */
+  .part-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color .2s, transform .2s;
+  }
+  .part-card:hover { border-color: var(--mint); transform: translateY(-3px); }
+  .part-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .part-header.fe { border-top: 3px solid var(--mint); }
+  .part-header.be { border-top: 3px solid var(--blue); }
+  .part-header.ai { border-top: 3px solid var(--purple); }
+  .part-header.pm { border-top: 3px solid var(--yellow); }
+  .part-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .part-name { font-size: 1.1rem; font-weight: 800; }
+  .part-role { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+  .part-body { padding: 20px 24px; }
+  .part-body ul { list-style: none; }
+  .part-body li {
+    font-size: .88rem; padding: 7px 0;
+    border-bottom: 1px solid var(--border2);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .part-body li:last-child { border-bottom: none; }
+  .li-icon { flex-shrink: 0; margin-top: 1px; font-size: .9rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 6px; border: 1px solid;
+  }
+  .tag-mint   { color: var(--mint);   background: var(--mint-lt);   border-color: rgba(43,205,158,.3); }
+  .tag-blue   { color: var(--blue);   background: var(--blue-lt);   border-color: rgba(88,166,255,.3); }
+  .tag-orange { color: var(--orange); background: var(--orange-lt); border-color: rgba(247,129,102,.3); }
+  .tag-yellow { color: var(--yellow); background: var(--yellow-lt); border-color: rgba(227,179,65,.3); }
+  .tag-purple { color: var(--purple); background: var(--purple-lt); border-color: rgba(188,140,255,.3); }
+  .tag-red    { color: var(--red);    background: rgba(255,123,114,.1); border-color: rgba(255,123,114,.3); }
 
-    .info-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-    .info-row-item { display: flex; gap: 10px; }
-    .info-key {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--text-muted);
-      min-width: 52px; padding-top: 2px; flex-shrink: 0;
-    }
-    .info-val { font-size: 13.5px; line-height: 1.65; }
+  /* ── FLOW DIAGRAM ── */
+  .flow-wrap { padding: 24px; overflow-x: auto; }
+  .flow-row {
+    display: flex; align-items: center;
+    gap: 10px; flex-wrap: nowrap; min-width: max-content;
+    margin-bottom: 12px;
+  }
+  .flow-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: .85rem; font-weight: 600;
+    white-space: nowrap; text-align: center;
+  }
+  .flow-box.fe  { border-color: var(--mint);   color: var(--mint); }
+  .flow-box.be  { border-color: var(--blue);   color: var(--blue); }
+  .flow-box.ai  { border-color: var(--purple); color: var(--purple); }
+  .flow-box.db  { border-color: var(--yellow); color: var(--yellow); }
+  .flow-box.user { border-color: var(--orange); color: var(--orange); }
+  .flow-arrow { color: var(--muted); font-size: 1.1rem; flex-shrink: 0; }
+  .flow-label {
+    font-size: .75rem; color: var(--muted);
+    font-family: var(--mono); text-align: center;
+    margin-top: 4px;
+  }
+  .flow-pair { display: flex; flex-direction: column; align-items: center; }
 
-    .hbox {
-      border-radius: 10px; padding: 12px 14px;
-      font-size: 13px; line-height: 1.7; margin-bottom: 10px;
-    }
-    .hbox-goal  { background: #F0FDF4; border-left: 3px solid var(--primary);  color: #155E39; }
-    .hbox-pain  { background: #FFF7ED; border-left: 3px solid var(--accent);   color: #9A3412; }
-    .hbox-mgGoal{ background: #F4F0FF; border-left: 3px solid var(--manager);  color: #3B1D91; }
-    .hbox-quote { background: #F8FAFC; border-left: 3px solid #CBD5E1; color: #475569; font-style: italic; }
-    .hbox-title {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.09em;
-      text-transform: uppercase; margin-bottom: 5px; opacity: 0.6; font-style: normal;
-    }
+  /* ── API TABLE ── */
+  .api-group { margin-bottom: 28px; }
+  .api-group-title {
+    font-size: .85rem; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .1em;
+    margin-bottom: 12px; padding-left: 4px;
+    border-left: 3px solid var(--mint);
+    padding-left: 10px;
+  }
+  .api-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .api-item:hover { border-color: rgba(43,205,158,.4); }
+  .api-item.open { border-color: var(--mint); }
+  .api-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+  }
+  .method {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    padding: 3px 9px; border-radius: 5px; flex-shrink: 0;
+    min-width: 48px; text-align: center;
+  }
+  .method.GET    { background: rgba(43,205,158,.15); color: var(--mint); }
+  .method.POST   { background: rgba(88,166,255,.15);  color: var(--blue); }
+  .method.PUT    { background: rgba(227,179,65,.15);  color: var(--yellow); }
+  .method.DELETE { background: rgba(255,123,114,.15); color: var(--red); }
+  .api-path {
+    font-family: var(--mono); font-size: .82rem; color: var(--text);
+    flex: 1;
+  }
+  .api-desc { font-size: .8rem; color: var(--muted); flex-shrink: 0; }
+  .api-arrow {
+    color: var(--muted); font-size: .85rem; flex-shrink: 0;
+    transition: transform .2s;
+  }
+  .api-item.open .api-arrow { transform: rotate(180deg); }
+  .api-detail {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border2);
+  }
+  .api-item.open .api-detail { display: block; }
 
-    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
-    .tag {
-      font-size: 11.5px; font-weight: 500; padding: 4px 12px; border-radius: 999px;
-    }
-    .tag-n { background: var(--primary-light); color: var(--primary); }
-    .tag-m { background: var(--manager-light); color: var(--manager); }
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: var(--mono);
+    font-size: .78rem;
+    line-height: 1.9;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  .code-comment { color: #484f58; }
+  .code-key     { color: var(--blue); }
+  .code-val     { color: var(--mint); }
+  .code-str     { color: #a5d6ff; }
+  .code-num     { color: var(--orange); }
+  .code-bool    { color: var(--purple); }
+  .code-null    { color: var(--muted); }
 
-    /* ── JOURNEY MAP ── */
-    .journey-wrap { overflow-x: auto; }
-    .journey-table {
-      width: 100%; min-width: 640px; border-collapse: collapse;
-      background: var(--surface); border-radius: 16px;
-      border: 1px solid var(--border);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      overflow: hidden; margin-bottom: 32px;
-    }
-    .journey-table thead tr { background: var(--primary-light); }
-    .journey-table.mgr thead tr { background: var(--manager-light); }
-    .journey-table th {
-      padding: 13px 18px; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--text-muted); text-align: left;
-    }
-    .journey-table td {
-      padding: 13px 18px; font-size: 13.5px;
-      border-top: 1px solid var(--border); line-height: 1.6; vertical-align: top;
-    }
-    .journey-table tr:hover td { background: #FAFAF9; }
-    .step-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 24px; height: 24px; border-radius: 50%;
-      font-size: 11px; font-weight: 700; flex-shrink: 0;
-    }
-    .sb-n { background: var(--primary-light); color: var(--primary); }
-    .sb-m { background: var(--manager-light); color: var(--manager); }
-    .emoji { font-size: 17px; }
-    .pain-text { color: #B45309; font-weight: 600; }
-    .solution-text { color: var(--primary); font-weight: 600; }
+  /* ── EXPLAIN BOX ── */
+  .explain-box {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: .85rem;
+    line-height: 1.75;
+    margin-top: 12px;
+    color: #a8b6c6;
+  }
+  .explain-box strong { color: var(--text); }
+  .explain-box .highlight {
+    background: var(--mint-lt);
+    color: var(--mint);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: .75em;
+  }
 
-    /* ── SCENARIO ── */
-    .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .scenario-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; overflow: hidden;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-      animation: fadeUp 0.5s ease both;
-    }
-    .scenario-card:nth-child(1) { animation-delay: 0.05s; }
-    .scenario-card:nth-child(2) { animation-delay: 0.12s; }
-    .scenario-card:nth-child(3) { animation-delay: 0.18s; }
-    .scenario-card:nth-child(4) { animation-delay: 0.24s; }
+  /* ── ERD TABLE ── */
+  .erd-table {
+    width: 100%; border-collapse: collapse;
+    font-size: .83rem; margin-top: 12px;
+  }
+  .erd-table th {
+    text-align: left; padding: 8px 12px;
+    background: var(--bg3);
+    color: var(--muted);
+    font-weight: 600; font-size: .75rem;
+    text-transform: uppercase; letter-spacing: .06em;
+    border-bottom: 1px solid var(--border);
+  }
+  .erd-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border2);
+    vertical-align: top;
+  }
+  .erd-table tr:last-child td { border-bottom: none; }
+  .col-pk {
+    font-family: var(--mono); font-size: .7rem;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(227,179,65,.15); color: var(--yellow);
+    border: 1px solid rgba(227,179,65,.3);
+  }
+  .col-fk {
+    font-family: var(--mono); font-size: .7rem;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(88,166,255,.12); color: var(--blue);
+    border: 1px solid rgba(88,166,255,.3);
+  }
+  .col-name {
+    font-family: var(--mono); color: var(--mint); font-size: .82rem;
+  }
+  .col-type { color: var(--muted); font-family: var(--mono); font-size: .75rem; }
+  .col-desc { color: #a8b6c6; }
+  .nullable {
+    font-size: .7rem; color: var(--muted);
+    background: var(--bg3); padding: 1px 5px;
+    border-radius: 3px; margin-left: 4px;
+  }
 
-    .sc-header {
-      padding: 20px 24px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: flex-start; gap: 14px;
-    }
-    .sc-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
-    }
-    .sc-icon-n { background: var(--primary-light); }
-    .sc-icon-m { background: var(--manager-light); }
-    .sc-persona { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-    .sc-title { font-size: 15px; font-weight: 700; line-height: 1.35; }
-    .sc-body { padding: 20px 24px; }
-    .sc-step {
-      display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start;
-    }
-    .sc-step:last-child { margin-bottom: 0; }
-    .sc-num {
-      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; margin-top: 1px;
-    }
-    .sc-num-n { background: var(--primary-light); color: var(--primary); }
-    .sc-num-m { background: var(--manager-light); color: var(--manager); }
-    .sc-text { font-size: 13.5px; line-height: 1.7; }
-    .sc-text strong { font-weight: 600; }
-    .sc-emotion {
-      display: inline-block; margin-top: 6px;
-      font-size: 12px; color: var(--text-muted); font-style: italic;
-    }
-    .sc-solution {
-      background: var(--primary-light); border-radius: 10px;
-      padding: 12px 14px; margin-top: 18px;
-      font-size: 12.5px; color: #155E39; line-height: 1.65;
-    }
-    .sc-solution.mgr { background: var(--manager-light); color: #3B1D91; }
-    .sc-solution-title {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.09em;
-      text-transform: uppercase; margin-bottom: 5px; opacity: 0.65;
-    }
+  /* ── RELATION ── */
+  .relation-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: .88rem;
+  }
+  .rel-tables { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .rel-tbl {
+    font-family: var(--mono); font-size: .8rem;
+    padding: 4px 12px; border-radius: 6px;
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .rel-sign { color: var(--muted); font-size: .85rem; }
+  .rel-desc { color: var(--muted); font-size: .82rem; flex: 1.5; }
 
-    /* ── FOOTER ── */
-    .footer {
-      max-width: 1160px; margin: 0 auto;
-      padding: 40px 40px;
-      border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 12px; color: var(--text-muted);
-    }
-    .footer-logo { font-family: 'Fraunces', serif; font-size: 15px; color: var(--primary); }
+  /* ── TOKEN FLOW ── */
+  .token-flow {
+    display: flex; flex-direction: column; gap: 0;
+    position: relative; padding-left: 32px; margin-top: 16px;
+  }
+  .token-flow::before {
+    content: '';
+    position: absolute; left: 9px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--mint), var(--blue));
+    border-radius: 2px;
+  }
+  .tf-step {
+    position: relative;
+    padding: 0 0 20px 16px;
+  }
+  .tf-step::before {
+    content: '';
+    position: absolute; left: -23px; top: 5px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--mint);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--mint);
+  }
+  .tf-step.be::before { background: var(--blue); box-shadow: 0 0 0 2px var(--blue); }
+  .tf-step.ai::before { background: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+  .tf-step.db::before { background: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+  .tf-label { font-size: .78rem; font-weight: 700; color: var(--mint); margin-bottom: 2px; font-family: var(--mono); }
+  .tf-step.be .tf-label { color: var(--blue); }
+  .tf-step.ai .tf-label { color: var(--purple); }
+  .tf-step.db .tf-label { color: var(--yellow); }
+  .tf-title { font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+  .tf-desc { font-size: .82rem; color: var(--muted); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr; padding: 48px 20px 32px; }
-      .hero-stats { flex-direction: row; justify-content: space-around; min-width: unset; }
-      .stat-divider { display: none; }
-      .container { padding: 0 20px; }
-      .timeline-row { grid-template-columns: 1fr 1fr; }
-      .scenario-grid { grid-template-columns: 1fr; }
-      .nav { padding: 0 20px; gap: 20px; }
-    }
-  </style>
+  /* ── WARN BOX ── */
+  .warn-box {
+    background: rgba(227,179,65,.07);
+    border: 1px solid rgba(227,179,65,.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: .85rem;
+    color: #c8a94a;
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-top: 16px;
+  }
+  .info-box {
+    background: var(--mint-lt);
+    border: 1px solid rgba(43,205,158,.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: .85rem;
+    color: #6be4c4;
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-top: 12px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 40px 24px;
+    color: var(--muted); font-size: .82rem;
+    border-top: 1px solid var(--border2);
+  }
+  footer strong { color: var(--mint); }
+
+  /* ── ANIMATION ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .panel.active { animation: fadeUp .35s ease; }
+</style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-logo">위드버디</div>
-  <a href="file:///C:/Users/USER/Downloads/withbuddy-personas-v2_4.html#research">리서치</a>
-  <a href="file:///C:/Users/USER/Downloads/withbuddy-personas-v2_4.html#personas">페르소나</a>
-  <a href="file:///C:/Users/USER/Downloads/withbuddy-personas-v2_4.html#journey">저니맵</a>
-  <a href="file:///C:/Users/USER/Downloads/withbuddy-personas-v2_4.html#scenario">시나리오</a>
+<header class="site-header">
+  <div class="header-chip">// WithBuddy Collaboration Guide</div>
+  <h1>다른 파트는 <span class="acc">무엇을 하나요?</span></h1>
+  <p class="sub">백엔드 · AI · 기획/디자인 파트 완전 이해 가이드 — API 명세서 & ERD 기반</p>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <button class="tab-btn active" data-tab="overview">🗺️ 전체 그림</button>
+  <button class="tab-btn" data-tab="backend">⚙️ 백엔드 파트</button>
+  <button class="tab-btn" data-tab="ai">🤖 AI 파트</button>
+  <button class="tab-btn" data-tab="design">🎨 기획/디자인</button>
+  <button class="tab-btn" data-tab="api">📡 API 명세 읽기</button>
+  <button class="tab-btn" data-tab="erd">🗄️ ERD 읽기</button>
+  <button class="tab-btn" data-tab="flow">🔄 협업 흐름</button>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div>
-    <div class="hero-eyebrow">🔍 UX Research · Persona Document v2</div>
-    <h1>위드버디<br><em>페르소나</em> 문서</h1>
-    <p>신입사원 온보딩 서비스 위드버디의 핵심 사용자를 정의한 문서입니다.<br>
-    pxd UX 리서치 및 글로벌 온보딩 연구 데이터를 바탕으로 작성되었습니다.</p>
-  </div>
-  <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-num">6</div>
-      <div class="stat-label">페르소나</div>
+<div class="content">
+
+  <!-- ===== TAB 1: OVERVIEW ===== -->
+  <div class="panel active" id="tab-overview">
+    <div class="eyebrow">// 00. 전체 그림</div>
+    <h2 class="sec-title"><span class="num">#00</span> 위드버디는 누가 무엇을 만드나요?</h2>
+
+    <div class="card" style="margin-bottom:28px;">
+      <div class="card-title"><div class="dot dot-mint"></div> 개발 팀 구성 한눈에 보기</div>
+      <p style="font-size:.88rem; color:var(--muted); margin-bottom:18px;">
+        위드버디는 혼자 만드는 게 아니야! 역할이 나뉜 여러 파트가 협력해서 하나의 서비스를 만들어.
+      </p>
+      <div class="grid-2" style="gap:14px;">
+        <div class="part-card">
+          <div class="part-header fe">
+            <div class="part-icon">🖥️</div>
+            <div class="part-name">프론트엔드 (나!)</div>
+            <div class="part-role">사용자가 보는 화면 담당</div>
+          </div>
+          <div class="part-body">
+            <ul>
+              <li><span class="li-icon">✦</span>로그인 폼 · 채팅 UI · Nudge 카드 만들기</li>
+              <li><span class="li-icon">✦</span>버튼 클릭, 입력값 처리, 화면 전환</li>
+              <li><span class="li-icon">✦</span>백엔드 API 호출 & 데이터 화면에 표시</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag tag-mint">HTML</span>
+              <span class="tag tag-mint">CSS</span>
+              <span class="tag tag-mint">JavaScript</span>
+              <span class="tag tag-mint">React</span>
+            </div>
+          </div>
+        </div>
+        <div class="part-card">
+          <div class="part-header be">
+            <div class="part-icon">⚙️</div>
+            <div class="part-name">백엔드</div>
+            <div class="part-role">서버 · 데이터 · 인증 담당</div>
+          </div>
+          <div class="part-body">
+            <ul>
+              <li><span class="li-icon">✦</span>로그인 처리 & JWT 토큰 발급</li>
+              <li><span class="li-icon">✦</span>채팅 메시지 저장 · 조회</li>
+              <li><span class="li-icon">✦</span>AI 서버에 질문 전달 후 결과 반환</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag tag-blue">Spring Boot</span>
+              <span class="tag tag-blue">REST API</span>
+              <span class="tag tag-blue">MySQL</span>
+            </div>
+          </div>
+        </div>
+        <div class="part-card">
+          <div class="part-header ai">
+            <div class="part-icon">🤖</div>
+            <div class="part-name">AI 파트</div>
+            <div class="part-role">답변 생성 엔진 담당</div>
+          </div>
+          <div class="part-body">
+            <ul>
+              <li><span class="li-icon">✦</span>사내 문서를 읽고 AI 답변 생성 (RAG)</li>
+              <li><span class="li-icon">✦</span>질문 범위 벗어남 여부 판단</li>
+              <li><span class="li-icon">✦</span>백엔드 내부 API로만 통신 (프론트엔드 직접 호출 ✗)</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag tag-purple">Python</span>
+              <span class="tag tag-purple">LangChain</span>
+              <span class="tag tag-purple">RAG</span>
+            </div>
+          </div>
+        </div>
+        <div class="part-card">
+          <div class="part-header pm">
+            <div class="part-icon">🎨</div>
+            <div class="part-name">기획 / 디자인</div>
+            <div class="part-role">서비스 방향 · 화면 설계 담당</div>
+          </div>
+          <div class="part-body">
+            <ul>
+              <li><span class="li-icon">✦</span>서비스 기획 · 기능 범위 결정</li>
+              <li><span class="li-icon">✦</span>Figma로 화면 디자인 시안 제공</li>
+              <li><span class="li-icon">✦</span>API 명세서 · ERD 문서 관리</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag tag-yellow">Figma</span>
+              <span class="tag tag-yellow">Notion</span>
+              <span class="tag tag-yellow">API 설계</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-num">3mo</div>
-      <div class="stat-label">위드버디<br>수습 기간</div>
-    </div>
-  </div>
-</div>
 
-<div class="container">
-
-  <!-- RESEARCH BANNER -->
-  <div id="research" class="research-banner">
-    <h3>📋 리서치 기반 핵심 인사이트</h3>
-    <div class="research-grid">
-      <div class="research-item">
-        <span class="r-icon">🙋</span>
-        <span><strong>"이 질문을 누구한테 해야 하지?"</strong> — 담당자가 불명확해 엉뚱한 사람에게 물어보다 시간 낭비</span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">😰</span>
-        <span><strong>사수가 바빠 보이면 질문 자체를 못 함</strong> — 무서운 사수일수록 눈치가 더 심해짐</span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">🌀</span>
-        <span><strong>첫날 정보 과부하</strong> — 수십 명 소개 + 업무 설명을 동시에 받으면서 정신이 없고, 하루 정리가 안 됨</span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">✂️</span>
-        <span><strong>사수도 본인 일을 하면서 알려줌</strong> — 설명이 끊기거나 불충분한 경우가 많아 신입이 빈 곳을 채워야 함</span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">📄</span>
-        <span>입사 첫날 정보가 <strong>구두로만 전달</strong>되어 휘발됨. 긴장 상태에서 들으면 숙지 안 됨 <em>(pxd 리서치)</em></span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">📊</span>
-        <span>신입사원의 <strong>52%가 "훈련 부족"</strong>을 느낌. 소규모 기업일수록 더 심각 <em>(Paychex)</em></span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">⚡</span>
-        <span>성공적인 온보딩은 업무 속도를 <strong>50% 향상</strong>시킴 <em>(LinkedIn 연구)</em></span>
-      </div>
-      <div class="research-item">
-        <span class="r-icon">🔄</span>
-        <span>온보딩 미흡 시 <strong>첫 3개월 내 퇴사율 증가</strong> — 대체 비용은 연봉의 21% <em>(LumApps)</em></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ONBOARDING TIMELINE -->
-  <div class="timeline-row">
-    <div class="tl-step">
-      <div class="tl-tag">Pre-Boarding</div>
-      <div class="tl-title">합격 ~ 첫 출근 전</div>
-      <div class="tl-desc">첫인상 형성 단계. 기대와 불안이 공존. 회사 문화·정보 전달이 핵심</div>
-    </div>
-    <div class="tl-step">
-      <div class="tl-tag">1st Day</div>
-      <div class="tl-title">첫 출근일</div>
-      <div class="tl-desc">계약서·오리엔테이션·동료 첫 만남. "환영받는 느낌"이 장기 인상을 결정</div>
-    </div>
-    <div class="tl-step">
-      <div class="tl-tag">1st Week</div>
-      <div class="tl-title">첫 번째 주</div>
-      <div class="tl-desc">동료 파악, 사무실 적응, 기본 시스템 세팅. 정보 과부하가 가장 위험한 시기</div>
-    </div>
-    <div class="tl-step">
-      <div class="tl-tag">~ 3 Month</div>
-      <div class="tl-title">수습 기간</div>
-      <div class="tl-desc">실무 투입·역할 정의. 스스로 성장을 확인하고 조직에 녹아드는 단계</div>
-    </div>
-  </div>
-
-  <!-- ── 신입사원 PERSONA ── -->
-  <div id="personas" class="section">
-    <div class="section-header">
-      <span class="section-pill pill-newbie">신입사원</span>
-      <span class="section-title">신입사원 페르소나</span>
-      <span class="section-count">4 personas</span>
-    </div>
-    <div class="persona-grid">
-
-      <!-- 신입 1 -->
-      <div class="persona-card">
-        <div class="card-top">
-          <div class="avatar av-newbie">👩‍💻</div>
-          <div>
-            <div class="card-name">김지원</div>
-            <div class="card-meta">26세 · IT 개발팀 신입 · 2개월차</div>
+    <div class="card">
+      <div class="card-title"><div class="dot dot-blue"></div> 각 파트가 어떻게 연결되나요? (데이터 흐름 요약)</div>
+      <div class="flow-wrap">
+        <div class="flow-row">
+          <div class="flow-pair">
+            <div class="flow-box user">👤 사용자</div>
+            <div class="flow-label">브라우저에서 사용</div>
           </div>
-          <span class="card-badge badge-newbie">신입사원</span>
-        </div>
-        <div class="divider"></div>
-        <div class="info-grid">
-          <div class="info-row-item">
-            <span class="info-key">성격</span>
-            <span class="info-val">성실하고 꼼꼼하지만 사수가 무서운 편이라 말 걸기가 너무 어려움</span>
+          <div class="flow-arrow">→</div>
+          <div class="flow-pair">
+            <div class="flow-box fe">🖥️ 프론트엔드</div>
+            <div class="flow-label">React + API 호출</div>
           </div>
-          <div class="info-row-item">
-            <span class="info-key">상황</span>
-            <span class="info-val">질문이 생겨도 사수가 항상 바빠 보여서 눈치만 보다가 결국 혼자 해결하려 함</span>
+          <div class="flow-arrow">→</div>
+          <div class="flow-pair">
+            <div class="flow-box be">⚙️ 백엔드</div>
+            <div class="flow-label">Spring Boot 서버</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-pair">
+            <div class="flow-box db">🗄️ DB</div>
+            <div class="flow-label">MySQL</div>
           </div>
         </div>
-        <div class="hbox hbox-goal">
-          <div class="hbox-title">🎯 목표</div>
-          사수를 방해하지 않으면서도 모르는 것을 빠르게 해결하고 싶음
-        </div>
-        <div class="hbox hbox-pain">
-          <div class="hbox-title">😰 핵심 불편함</div>
-          사수가 바빠 보일 때 질문을 해도 되는지조차 판단이 안 됨. 무서운 인상이라 더 위축됨
-        </div>
-        <div class="hbox hbox-quote">
-          <div class="hbox-title">🚨 문제 상황</div>
-          "사수님이 바빠 보이는데 이걸 지금 여쭤봐도 되나… 그냥 내가 찾아볼게. 근데 어디서 찾지?"
-        </div>
-        <div class="tag-row">
-          <span class="tag tag-n">사내 Q&amp;A</span>
-          <span class="tag tag-n">부서별 담당자 연결</span>
-          <span class="tag tag-n">자주 묻는 질문</span>
+        <div class="flow-row" style="padding-left: 370px;">
+          <div class="flow-arrow" style="transform: rotate(90deg); margin: 0 8px;">↕</div>
+          <div class="flow-pair">
+            <div class="flow-box ai">🤖 AI 서버</div>
+            <div class="flow-label">내부 통신만</div>
+          </div>
         </div>
       </div>
-
-      <!-- 신입 2 -->
-      <div class="persona-card">
-        <div class="card-top">
-          <div class="avatar av-newbie">👨‍💼</div>
-          <div>
-            <div class="card-name">이준혁</div>
-            <div class="card-meta">25세 · 마케팅팀 신입 · 입사 1주차</div>
-          </div>
-          <span class="card-badge badge-newbie">신입사원</span>
-        </div>
-        <div class="divider"></div>
-        <div class="info-grid">
-          <div class="info-row-item">
-            <span class="info-key">성격</span>
-            <span class="info-val">적극적이고 메모하는 습관이 있지만 정보량이 너무 많으면 패닉 옴</span>
-          </div>
-          <div class="info-row-item">
-            <span class="info-key">상황</span>
-            <span class="info-val">첫날 수십 명을 한꺼번에 소개받고, 동시에 업무 설명까지 들으면서 완전히 과부하 상태</span>
-          </div>
-        </div>
-        <div class="hbox hbox-goal">
-          <div class="hbox-title">🎯 목표</div>
-          하루가 끝났을 때 오늘 만난 사람, 들은 내용을 제대로 정리해두고 싶음
-        </div>
-        <div class="hbox hbox-pain">
-          <div class="hbox-title">😰 핵심 불편함</div>
-          첫날 너무 많은 정보를 한꺼번에 받아서 정신이 없음. 그날 하루를 제대로 정리하지 못한 채 퇴근함
-        </div>
-        <div class="hbox hbox-quote">
-          <div class="hbox-title">🚨 문제 상황</div>
-          "오늘 몇 명을 만난 거지? 이름도 다 모르겠고, 업무 설명도 뭔 말인지… 집에 가서 뭘 정리해야 하지?"
-        </div>
-        <div class="tag-row">
-          <span class="tag tag-n">데일리 기록</span>
-          <span class="tag tag-n">AI 업무일지 요약</span>
-          <span class="tag tag-n">온보딩 로드맵</span>
-        </div>
+      <div class="info-box" style="margin-top:16px;">
+        <span>💡</span>
+        <span><strong>핵심 포인트:</strong> 프론트엔드는 백엔드하고만 대화해! AI 서버에 직접 연락하지 않아. 백엔드가 AI 서버와 프론트엔드 사이의 <strong>"중간 통역사"</strong> 역할을 해줘.</span>
       </div>
-
-      <!-- 신입 3 -->
-      <div class="persona-card">
-        <div class="card-top">
-          <div class="avatar av-newbie">👩‍🎨</div>
-          <div>
-            <div class="card-name">박소연</div>
-            <div class="card-meta">27세 · 디자인팀 신입 · 3개월차</div>
-          </div>
-          <span class="card-badge badge-newbie">신입사원</span>
-        </div>
-        <div class="divider"></div>
-        <div class="info-grid">
-          <div class="info-row-item">
-            <span class="info-key">성격</span>
-            <span class="info-val">이해력은 빠르지만 완벽주의 성향이 있어 설명이 부족하면 불안해함</span>
-          </div>
-          <div class="info-row-item">
-            <span class="info-key">상황</span>
-            <span class="info-val">사수가 자기 업무를 하면서 알려주다 보니 설명이 중간중간 끊기고 빠진 내용이 많음</span>
-          </div>
-        </div>
-        <div class="hbox hbox-goal">
-          <div class="hbox-title">🎯 목표</div>
-          사수에게 다시 묻지 않아도 될 만큼 업무 흐름을 스스로 파악하고 싶음
-        </div>
-        <div class="hbox hbox-pain">
-          <div class="hbox-title">😰 핵심 불편함</div>
-          사수도 본인 일을 하면서 알려주다 보니 설명이 불충분함. 그렇다고 또 물어보기도 눈치 보임
-        </div>
-        <div class="hbox hbox-quote">
-          <div class="hbox-title">🚨 문제 상황</div>
-          "사수님이 바빠서 대충 알려주신 것 같은데… 이 다음 단계를 어떻게 하는 건지 아직도 모르겠어요."
-        </div>
-        <div class="tag-row">
-          <span class="tag tag-n">주차별 온보딩 로드맵</span>
-          <span class="tag tag-n">부서별 체크리스트</span>
-          <span class="tag tag-n">사내 Q&amp;A</span>
-        </div>
-      </div>
-
-      <!-- 신입 4 -->
-      <div class="persona-card">
-        <div class="card-top">
-          <div class="avatar av-newbie">🧑‍💻</div>
-          <div>
-            <div class="card-name">한도윤</div>
-            <div class="card-meta">29세 · 경력직 신입 · 1개월차</div>
-          </div>
-          <span class="card-badge badge-newbie">신입사원</span>
-        </div>
-        <div class="divider"></div>
-        <div class="info-grid">
-          <div class="info-row-item">
-            <span class="info-key">성격</span>
-            <span class="info-val">이전 회사 경험이 있어 나름 자신 있었지만, 막상 오니 모르는 게 너무 많음</span>
-          </div>
-          <div class="info-row-item">
-            <span class="info-key">상황</span>
-            <span class="info-val">이 질문을 누구한테 해야 하는지조차 몰라서 엉뚱한 사람에게 물어보다 당황한 적 있음</span>
-          </div>
-        </div>
-        <div class="hbox hbox-goal">
-          <div class="hbox-title">🎯 목표</div>
-          질문할 때 "이게 누구 담당인지"를 미리 알고, 맞는 사람에게 바로 물어보고 싶음
-        </div>
-        <div class="hbox hbox-pain">
-          <div class="hbox-title">😰 핵심 불편함</div>
-          어떤 질문을 어느 팀, 누구에게 해야 하는지 몰라서 여기저기 물어보다 시간을 낭비함
-        </div>
-        <div class="hbox hbox-quote">
-          <div class="hbox-title">🚨 문제 상황</div>
-          "이게 개발팀 담당인지 운영팀 담당인지를 모르겠어요. 물어봤다가 '저는 모르는데요' 들으면 또 눈치 보이고."
-        </div>
-        <div class="tag-row">
-          <span class="tag tag-n">부서별 담당자 연결</span>
-          <span class="tag tag-n">자주 묻는 질문 카테고리</span>
-          <span class="tag tag-n">사내 Q&amp;A</span>
-        </div>
-      </div>
-
     </div>
   </div>
 
-  <!-- ── 팀장 PERSONA ── -->
-  <div class="section" style="padding-top: 0;">
-    <div class="section-header">
-      <span class="section-pill pill-manager">팀장</span>
-      <span class="section-title">팀장 페르소나</span>
-      <span class="section-count">2 personas</span>
+
+  <!-- ===== TAB 2: BACKEND ===== -->
+  <div class="panel" id="tab-backend">
+    <div class="eyebrow">// 01. 백엔드 파트</div>
+    <h2 class="sec-title"><span class="num">#01</span> 백엔드는 정확히 무엇을 하나요?</h2>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-blue"></div> 백엔드 = "주방"이야!</div>
+      <div class="explain-box">
+        🍽️ 레스토랑에 비유하면:<br>
+        <strong>프론트엔드 = 홀 직원</strong> (손님 응대, 주문 받기, 음식 서빙)<br>
+        <strong>백엔드 = 주방</strong> (실제 음식 조리, 재료 관리, 레시피 보관)<br>
+        <strong>DB = 냉장고</strong> (재료들을 저장)<br><br>
+        손님(사용자)이 "연차 신청 방법 알려줘!"라고 하면, 홀 직원(프론트엔드)이 주방(백엔드)에 주문을 넣고, 주방은 냉장고(DB)에서 재료 꺼내서 요리해서 다시 보내줘.
+      </div>
     </div>
-    <div class="persona-grid">
 
-      <!-- 팀장 1 -->
-      <div class="persona-card">
-        <div class="card-top">
-          <div class="avatar av-manager">👨‍💼</div>
-          <div>
-            <div class="card-name">박성민</div>
-            <div class="card-meta">38세 · 개발팀 팀장 · 경력 12년</div>
-          </div>
-          <span class="card-badge badge-manager">팀장</span>
-        </div>
-        <div class="divider"></div>
-        <div class="info-grid">
-          <div class="info-row-item">
-            <span class="info-key">성격</span>
-            <span class="info-val">일 중심적이고 말수가 적음. 신입이 보기엔 접근하기 어려운 인상</span>
-          </div>
-          <div class="info-row-item">
-            <span class="info-key">상황</span>
-            <span class="info-val">신입 사수를 맡고 있지만 본인 프로젝트도 마감이 겹쳐 신입을 챙길 여유가 없음</span>
-          </div>
-        </div>
-        <div class="hbox hbox-mgGoal">
-          <div class="hbox-title">🎯 목표</div>
-          신입이 스스로 해결할 수 있는 환경을 만들어주고 싶지만, 그럴 시간도 없는 게 현실
-        </div>
-        <div class="hbox hbox-pain">
-          <div class="hbox-title">😰 핵심 불편함</div>
-          신입이 어디서 막혀 있는지, 뭘 모르는지를 직접 물어보지 않으면 전혀 알 수가 없음
-        </div>
-        <div class="hbox hbox-quote">
-          <div class="hbox-title">🚨 문제 상황</div>
-          "나도 신입 때 다 겪었는데 요즘은 너무 바빠서 예전처럼 하나하나 알려주기가 쉽지 않아요."
-        </div>
-        <div class="tag-row">
-          <span class="tag tag-m">AI 주간 리포트</span>
-          <span class="tag tag-m">미등록 질문 확인</span>
-          <span class="tag tag-m">슬랙 연동</span>
-        </div>
+    <div class="card">
+      <div class="card-title"><div class="dot dot-blue"></div> 백엔드가 위드버디에서 구체적으로 하는 일</div>
+      <ul style="list-style:none; font-size:.88rem;">
+        <li style="padding:12px 0; border-bottom:1px solid var(--border2); display:flex; gap:14px;">
+          <span style="color:var(--blue); font-weight:700; min-width:100px; flex-shrink:0;">🔐 로그인 처리</span>
+          <span style="color:#a8b6c6;">프론트에서 보낸 "회사코드 + 사번 + 이름"을 DB에서 찾아보고, 맞으면 <span style="color:var(--mint); font-family:var(--mono); font-size:.85em;">accessToken</span> 발급. 이게 "입장권"이야!</span>
+        </li>
+        <li style="padding:12px 0; border-bottom:1px solid var(--border2); display:flex; gap:14px;">
+          <span style="color:var(--blue); font-weight:700; min-width:100px; flex-shrink:0;">💬 채팅 저장</span>
+          <span style="color:#a8b6c6;">사용자가 보낸 질문을 DB에 저장하고, AI 서버에 전달해서 답변을 받아 DB에 저장한 후 프론트에 돌려줘.</span>
+        </li>
+        <li style="padding:12px 0; border-bottom:1px solid var(--border2); display:flex; gap:14px;">
+          <span style="color:var(--blue); font-weight:700; min-width:100px; flex-shrink:0;">📋 데이터 조회</span>
+          <span style="color:#a8b6c6;">채팅 기록, Nudge 목록, 빠른 질문 목록 등을 DB에서 꺼내서 프론트에 전달해줘.</span>
+        </li>
+        <li style="padding:12px 0; display:flex; gap:14px;">
+          <span style="color:var(--blue); font-weight:700; min-width:100px; flex-shrink:0;">🛡️ 보안 검사</span>
+          <span style="color:#a8b6c6;">프론트가 보내는 요청에 올바른 토큰이 있는지 확인해. 없으면 401 에러를 돌려줘.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-yellow"></div> JWT 토큰이 뭐야? — 프론트엔드가 꼭 알아야 해!</div>
+      <div class="explain-box">
+        <strong>JWT (JSON Web Token)</strong> = 로그인 성공 후 받는 "입장권"이야.<br><br>
+        🎫 놀이공원에서 입장권 받으면 → 어떤 놀이기구든 보여주면 탈 수 있잖아?<br>
+        JWT도 똑같아. 로그인 성공하면 긴 문자열을 받는데, 이후 모든 API 요청할 때 이걸 같이 보내면 돼.<br><br>
+        <strong>어디에 저장?</strong> → <span class="highlight">localStorage</span> 또는 메모리에 저장<br>
+        <strong>어떻게 보내?</strong> → HTTP 요청 헤더에 <span class="highlight">Authorization: Bearer {토큰}</span> 형태로 첨부<br>
+        <strong>만료되면?</strong> → 401 에러 + <span class="highlight">TOKEN_EXPIRED</span> 코드 → 로그인 페이지로 이동시켜야 해!
       </div>
+      <div class="code-block">
+<span class="code-comment">// 로그인 후 토큰 저장 예시</span>
+<span class="code-key">localStorage</span>.<span class="code-val">setItem</span>(<span class="code-str">'accessToken'</span>, response.accessToken);
 
-      <!-- 팀장 2 -->
-      <div class="persona-card">
-        <div class="card-top">
-          <div class="avatar av-manager">👩‍💼</div>
-          <div>
-            <div class="card-name">최수진</div>
-            <div class="card-meta">42세 · 마케팅팀 팀장 · 경력 15년</div>
-          </div>
-          <span class="card-badge badge-manager">팀장</span>
-        </div>
-        <div class="divider"></div>
-        <div class="info-grid">
-          <div class="info-row-item">
-            <span class="info-key">성격</span>
-            <span class="info-val">신입을 잘 챙겨주고 싶은 마음은 크지만 현실적으로 시간이 부족함</span>
-          </div>
-          <div class="info-row-item">
-            <span class="info-key">상황</span>
-            <span class="info-val">신입에게 설명해 주다가 급한 연락이 오면 설명이 끊기는 일이 반복됨</span>
-          </div>
-        </div>
-        <div class="hbox hbox-mgGoal">
-          <div class="hbox-title">🎯 목표</div>
-          내가 바쁠 때도 신입이 혼자 찾아볼 수 있는 체계가 갖춰지길 바람
-        </div>
-        <div class="hbox hbox-pain">
-          <div class="hbox-title">😰 핵심 불편함</div>
-          내 일을 하면서 신입을 알려주다 보니 설명이 불충분해질 때가 많고, 신입이 어떤 상태인지 파악이 안 됨
-        </div>
-        <div class="hbox hbox-quote">
-          <div class="hbox-title">🚨 문제 상황</div>
-          "다 알려주고 싶은데 내 업무도 있으니까요. 신입이 어디까지 이해했는지 확인할 방법이 없어요."
-        </div>
-        <div class="tag-row">
-          <span class="tag tag-m">AI 리포트 요약</span>
-          <span class="tag tag-m">온보딩 진행률</span>
-          <span class="tag tag-m">답변 요청</span>
-        </div>
+<span class="code-comment">// 이후 API 요청 시 토큰 첨부</span>
+<span class="code-key">fetch</span>(<span class="code-str">'/api/v1/chat/messages'</span>, {
+  headers: {
+    <span class="code-str">'Authorization'</span>: <span class="code-str">`Bearer </span><span class="code-val">${localStorage.getItem('accessToken')}</span><span class="code-str">`</span>,
+    <span class="code-str">'Content-Type'</span>: <span class="code-str">'application/json'</span>
+  }
+})
       </div>
+    </div>
 
-
+    <div class="card">
+      <div class="card-title"><div class="dot dot-orange"></div> 백엔드와 협업할 때 내가 확인해야 할 것들</div>
+      <ul style="list-style:none; font-size:.88rem;">
+        <li style="padding:10px 0; border-bottom:1px solid var(--border2);">✅ <strong>요청 URL이 정확한지</strong> — 오타 하나도 에러남! 예: <code style="color:var(--mint); font-family:var(--mono);">/api/v1/auth/login</code></li>
+        <li style="padding:10px 0; border-bottom:1px solid var(--border2);">✅ <strong>요청 Body 필드명 정확히</strong> — <code style="color:var(--mint); font-family:var(--mono);">companyCode</code>와 <code style="color:var(--mint); font-family:var(--mono);">company_code</code>는 다른 거야!</li>
+        <li style="padding:10px 0; border-bottom:1px solid var(--border2);">✅ <strong>HTTP 메서드 확인</strong> — 조회는 GET, 생성은 POST. 틀리면 에러!</li>
+        <li style="padding:10px 0; border-bottom:1px solid var(--border2);">✅ <strong>에러 코드 처리</strong> — 401이면 로그인 페이지로, 400이면 입력값 확인</li>
+        <li style="padding:10px 0;">✅ <strong>Base URL 확인</strong> — 개발 중엔 <code style="color:var(--blue); font-family:var(--mono);">http://localhost:8080</code></li>
+      </ul>
     </div>
   </div>
 
-  <!-- ── JOURNEY MAP ── -->
-  <div id="journey" class="section" style="padding-top: 0;">
-    <div class="section-header">
-      <span class="section-pill pill-neutral">유저 저니맵</span>
-      <span class="section-title">User Journey Map</span>
+
+  <!-- ===== TAB 3: AI ===== -->
+  <div class="panel" id="tab-ai">
+    <div class="eyebrow">// 02. AI 파트</div>
+    <h2 class="sec-title"><span class="num">#02</span> AI 파트는 무엇을 하나요?</h2>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-purple"></div> RAG가 뭔데? — 위드버디 AI의 핵심!</div>
+      <div class="explain-box">
+        <strong>RAG (Retrieval-Augmented Generation)</strong> = "문서를 참고해서 답변 만들기"<br><br>
+        📚 예시로 이해하기:<br>
+        일반 AI (GPT 같은 거): "아는 것만 말해요. 모르면 모른다고 해요."<br>
+        RAG AI: "아, 이 회사의 복지카드 신청 문서를 먼저 읽어볼게요. 자, 문서 보니까 이렇게 하면 되네요!"<br><br>
+        → 위드버디는 각 회사의 <strong>사내 문서</strong>를 AI에게 먹여서, 그 회사에 맞는 답변을 만들어냄!<br>
+        → 그래서 A회사 신입이 물어보면 A회사 기준으로, B회사 신입이 물어보면 B회사 기준으로 대답해.
+      </div>
     </div>
 
-    <p style="font-size:13.5px; font-weight:600; color:var(--primary); margin-bottom:12px;">👩‍💻 신입사원 김지원의 하루</p>
-    <div class="journey-wrap">
-      <table class="journey-table">
-        <thead>
-          <tr>
-            <th>#</th><th>온보딩 단계</th><th>행동</th><th>감정</th><th>Pain Point</th><th>위드버디 해결</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="step-badge sb-n">1</span></td>
-            <td>Pre-Boarding</td>
-            <td>입사 전 회사 정보 파악 시도</td>
-            <td><span class="emoji">😰</span> 불안, 기대</td>
-            <td class="pain-text">정보 출처가 없어 막막함</td>
-            <td class="solution-text">사내 문서 Q&amp;A 미리 접근</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-n">2</span></td>
-            <td>1st Day</td>
-            <td>로그인 → 홈 대시보드 확인</td>
-            <td><span class="emoji">😐</span> 낯섦, 긴장</td>
-            <td class="pain-text">오늘 뭘 해야 하는지 모름</td>
-            <td class="solution-text">온보딩 로드맵·체크리스트 제공</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-n">3</span></td>
-            <td>1st Week</td>
-            <td>모르는 용어를 AI Q&amp;A에 검색</td>
-            <td><span class="emoji">😌</span> 눈치 안 봐도 돼서 안도</td>
-            <td class="pain-text">선배에게 물어보기 눈치 보임</td>
-            <td class="solution-text">24시간 AI 답변으로 심리 부담 해소</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-n">4</span></td>
-            <td>~3 Month</td>
-            <td>퇴근 전 데일리 기록 작성</td>
-            <td><span class="emoji">🙂</span> 오늘 정리된 느낌</td>
-            <td class="pain-text">성장하고 있는지 알 수 없음</td>
-            <td class="solution-text">AI 주간 리포트로 성장 가시화</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-n">5</span></td>
-            <td>~3 Month</td>
-            <td>주간 회고 + AI 리포트 확인</td>
-            <td><span class="emoji">😄</span> 뿌듯함, 자신감</td>
-            <td class="pain-text">막연한 불안감 지속</td>
-            <td class="solution-text">3개월 진척도로 성취감 제공</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <div class="card-title"><div class="dot dot-purple"></div> AI가 반환하는 답변 유형 3가지</div>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
+        <div style="background:rgba(43,205,158,.07); border:1px solid rgba(43,205,158,.2); border-radius:10px; padding:14px 18px;">
+          <div style="font-family:var(--mono); font-size:.8rem; color:var(--mint); margin-bottom:4px;">rag_answer</div>
+          <div style="font-size:.88rem; color:#a8b6c6;"><strong style="color:var(--text);">문서 기반 답변 성공!</strong> 사내 문서에서 관련 내용을 찾아서 답해줬을 때. 가장 좋은 케이스야.</div>
+        </div>
+        <div style="background:rgba(227,179,65,.07); border:1px solid rgba(227,179,65,.2); border-radius:10px; padding:14px 18px;">
+          <div style="font-family:var(--mono); font-size:.8rem; color:var(--yellow); margin-bottom:4px;">no_result</div>
+          <div style="font-size:.88rem; color:#a8b6c6;"><strong style="color:var(--text);">범위는 맞는데 문서가 없어!</strong> 예: "연차 신청법 알려줘" → 인사 관련이긴 한데, 이 회사 문서에 연차 내용이 없을 때.</div>
+        </div>
+        <div style="background:rgba(247,129,102,.07); border:1px solid rgba(247,129,102,.2); border-radius:10px; padding:14px 18px;">
+          <div style="font-family:var(--mono); font-size:.8rem; color:var(--orange); margin-bottom:4px;">out_of_scope</div>
+          <div style="font-size:.88rem; color:#a8b6c6;"><strong style="color:var(--text);">서비스 범위 밖!</strong> 예: "오늘 점심 메뉴 뭐가 좋아?" → 위드버디는 인사/행정 전용이라 이런 건 못 답해.</div>
+        </div>
+      </div>
+      <div class="info-box">
+        <span>💡</span>
+        <span><strong>프론트엔드에서 알아야 하는 이유:</strong> 백엔드에서 <code style="font-family:var(--mono); font-size:.85em;">messageType</code>을 그대로 돌려줘. 그래서 화면에서 <code style="font-family:var(--mono); font-size:.85em;">messageType</code>에 따라 다른 UI를 보여줘야 할 수도 있어! 예: no_result면 "관련 문서가 없어요" 안내 표시.</span>
+      </div>
     </div>
 
-    <p style="font-size:13.5px; font-weight:600; color:var(--manager); margin-bottom:12px; margin-top:28px;">👨‍💼 팀장 박성민의 하루</p>
-    <div class="journey-wrap">
-      <table class="journey-table mgr">
-        <thead>
-          <tr>
-            <th>#</th><th>상황</th><th>행동</th><th>감정</th><th>Pain Point</th><th>위드버디 해결</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="step-badge sb-m">1</span></td>
-            <td>출근</td>
-            <td>슬랙에서 신입 주간 리포트 알림 수신</td>
-            <td><span class="emoji">🙂</span> 따로 확인 안 해도 편함</td>
-            <td class="pain-text">일일이 신입 불러서 확인해야 함</td>
-            <td class="solution-text">슬랙 자동 리포트 전송</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-m">2</span></td>
-            <td>오전</td>
-            <td>리포트에서 신입별 문제 포인트 파악</td>
-            <td><span class="emoji">😊</span> 한눈에 보여서 좋음</td>
-            <td class="pain-text">신입이 어디서 막히는지 모름</td>
-            <td class="solution-text">AI 리포트로 성장·이슈 시각화</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-m">3</span></td>
-            <td>업무 중</td>
-            <td>미등록 질문 리스트 확인</td>
-            <td><span class="emoji">🤔</span> 이건 내가 답해줘야겠네</td>
-            <td class="pain-text">신입이 뭘 모르는지 파악 불가</td>
-            <td class="solution-text">미등록 Q 리스트로 니즈 파악</td>
-          </tr>
-          <tr>
-            <td><span class="step-badge sb-m">4</span></td>
-            <td>오후</td>
-            <td>담당자에게 슬랙으로 답변 요청</td>
-            <td><span class="emoji">😊</span> 효율적으로 처리됨</td>
-            <td class="pain-text">관련 팀에 일일이 연락해야 함</td>
-            <td class="solution-text">슬랙 원클릭 답변 요청</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <div class="card-title"><div class="dot dot-purple"></div> 프론트엔드 ↔ AI 파트 협업 포인트</div>
+      <div class="explain-box">
+        <strong>프론트엔드는 AI 서버에 직접 연락하지 않아!</strong><br><br>
+        흐름: 프론트 → 백엔드 → AI 서버 (내부 통신) → 백엔드 → 프론트<br><br>
+        즉, 프론트 입장에선 백엔드에 질문을 보내면 답변이 돌아오는 것처럼 보여.<br>
+        AI가 어떤 식으로 처리하는지는 신경 쓸 필요 없고, <strong>messageType</strong>과 <strong>content</strong>만 잘 받으면 돼!
+      </div>
+      <div class="warn-box">
+        <span>⚠️</span>
+        <span><strong>AI 파트와 맞춰야 할 것:</strong> 로딩 시간이 생각보다 길 수 있어. AI가 답변을 만드는 데 2~5초 걸릴 수 있으니, 프론트엔드에서는 반드시 "AI가 답변 중..." 로딩 표시를 보여줘야 해!</span>
+      </div>
     </div>
   </div>
 
-  <!-- ── SCENARIO ── -->
-  <div id="scenario" class="section" style="padding-top: 0;">
-    <div class="section-header">
-      <span class="section-pill pill-scenario">시나리오</span>
-      <span class="section-title">주요 사용 시나리오</span>
-      <span class="section-count">4 scenarios</span>
+
+  <!-- ===== TAB 4: DESIGN ===== -->
+  <div class="panel" id="tab-design">
+    <div class="eyebrow">// 03. 기획/디자인 파트</div>
+    <h2 class="sec-title"><span class="num">#03</span> 기획/디자인 파트가 하는 일</h2>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-yellow"></div> 기획/디자인 파트 역할</div>
+      <div class="grid-2" style="margin-top:4px;">
+        <div style="background:var(--bg3); border-radius:10px; padding:18px;">
+          <div style="font-size:1.4rem; margin-bottom:8px;">📋</div>
+          <div style="font-weight:700; margin-bottom:6px; font-size:.95rem;">기획 (PM)</div>
+          <div style="font-size:.84rem; color:var(--muted); line-height:1.7;">
+            어떤 기능을 만들지 결정<br>
+            API 명세서 작성<br>
+            ERD 설계<br>
+            우선순위 & 일정 관리
+          </div>
+        </div>
+        <div style="background:var(--bg3); border-radius:10px; padding:18px;">
+          <div style="font-size:1.4rem; margin-bottom:8px;">🎨</div>
+          <div style="font-weight:700; margin-bottom:6px; font-size:.95rem;">디자인</div>
+          <div style="font-size:.84rem; color:var(--muted); line-height:1.7;">
+            Figma로 화면 시안 제작<br>
+            색상/폰트/간격 정의<br>
+            UI 컴포넌트 가이드<br>
+            프로토타입 공유
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="scenario-grid">
 
-      <!-- 시나리오 1 -->
-      <div class="scenario-card">
-        <div class="sc-header">
-          <div class="sc-icon sc-icon-n">😰</div>
-          <div>
-            <div class="sc-persona">신입사원 김지원 (26세, 개발팀)</div>
-            <div class="sc-title">질문이 있는데 눈치 보여서<br>혼자 헤매는 상황</div>
-          </div>
-        </div>
-        <div class="sc-body">
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">1</div>
-            <div class="sc-text">
-              업무 중 사내 시스템 용어가 너무 낯설어서 막힘.<br>
-              <span class="sc-emotion">"이거 선배한테 물어봐도 되나? 너무 기본적인 거 아닐까?"</span>
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">2</div>
-            <div class="sc-text">
-              슬랙에 물어보려다가 <strong>눈치 보여서 포기</strong>.<br>
-              구글링 해봤지만 회사 내부 용어라 결과가 없음.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">3</div>
-            <div class="sc-text">
-              위드버디 <strong>사내 Q&amp;A</strong>에 질문 입력.<br>
-              사내 문서 기반으로 AI가 즉시 답변 제공.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">4</div>
-            <div class="sc-text">
-              <strong>30초 만에 해결</strong>. 업무에 바로 복귀.<br>
-              <span class="sc-emotion">"이게 있으니까 눈치 안 봐도 돼서 너무 좋다."</span>
-            </div>
-          </div>
-          <div class="sc-solution">
-            <div class="sc-solution-title">✅ 위드버디가 해결한 것</div>
-            질문 심리 부담 제거 + 사내 문서 기반 정확한 답변으로 업무 공백 최소화
-          </div>
-        </div>
+    <div class="card">
+      <div class="card-title"><div class="dot dot-yellow"></div> 기획/디자인 파트에서 받는 결과물 & 읽는 법</div>
+      <ul style="list-style:none; font-size:.88rem;">
+        <li style="padding:14px 0; border-bottom:1px solid var(--border2);">
+          <div style="font-weight:700; color:var(--yellow); margin-bottom:6px;">📄 API 명세서 (지금 이 문서!)</div>
+          <div style="color:#a8b6c6;">백엔드가 만드는 API의 규격서. URL · 요청 방식 · 주고받는 데이터 형식이 전부 들어있어. 프론트엔드가 이걸 보고 fetch/axios 코드를 작성해.</div>
+        </li>
+        <li style="padding:14px 0; border-bottom:1px solid var(--border2);">
+          <div style="font-weight:700; color:var(--yellow); margin-bottom:6px;">🗺️ ERD (데이터베이스 설계도)</div>
+          <div style="color:#a8b6c6;">데이터가 어떤 구조로 저장되는지 보여주는 표. 직접 건드릴 일은 없지만, "어떤 데이터를 API로 받을 수 있는지" 파악하는 데 도움돼.</div>
+        </li>
+        <li style="padding:14px 0;">
+          <div style="font-weight:700; color:var(--yellow); margin-bottom:6px;">🖼️ Figma 디자인 시안</div>
+          <div style="color:#a8b6c6;">화면이 어떻게 생겨야 하는지 보여주는 설계도. 색상, 폰트 크기, 버튼 위치 등 모든 시각적 요소가 담겨 있어. 이걸 보고 HTML/CSS로 구현해!</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-yellow"></div> Figma 읽는 법 — 초보자용</div>
+      <div class="explain-box">
+        Figma는 디자이너가 사용하는 "디지털 설계도" 툴이야. 프론트엔드 개발자가 Figma를 보고 그대로 코드로 구현하는 거야.<br><br>
+        <strong>보통 확인할 것들:</strong><br>
+        • <strong>색상 코드</strong> — 예: <span class="highlight">#2BCD9E</span> (이걸 CSS에 그대로 쓰면 돼)<br>
+        • <strong>폰트 크기</strong> — 예: 16px, 24px<br>
+        • <strong>간격 (Spacing)</strong> — 예: padding: 16px, margin: 24px<br>
+        • <strong>컴포넌트 구조</strong> — 어떤 요소들이 어떻게 배치돼 있는지<br><br>
+        <strong>Figma에서 수치 보는 법:</strong><br>
+        오른쪽 패널에 크기, 색상, 폰트 정보가 자동으로 나와. 요소 클릭하면 바로 확인 가능!
       </div>
-
-      <!-- 시나리오 2 -->
-      <div class="scenario-card">
-        <div class="sc-header">
-          <div class="sc-icon sc-icon-n">📋</div>
-          <div>
-            <div class="sc-persona">신입사원 이준혁 (28세, 마케팅팀)</div>
-            <div class="sc-title">흩어진 사내 정보를<br>찾아 헤매는 상황</div>
-          </div>
-        </div>
-        <div class="sc-body">
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">1</div>
-            <div class="sc-text">
-              연차 신청 방법을 찾고 싶은데 <strong>어디 있는지 모름</strong>.<br>
-              <span class="sc-emotion">"슬랙? 구글 드라이브? 회사 인트라넷?"</span>
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">2</div>
-            <div class="sc-text">
-              슬랙 검색 → 드라이브 검색 → 포기.<br>
-              결국 선배한테 물어봐서 <strong>30분 소비</strong>.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">3</div>
-            <div class="sc-text">
-              위드버디 <strong>인사·행정 문서함</strong>에서 카테고리 탐색.<br>
-              연차·복지·장비 신청 등 원하는 문서 바로 접근.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">4</div>
-            <div class="sc-text">
-              <strong>3분 만에 해결</strong>. 선배를 방해하지 않아도 됨.<br>
-              <span class="sc-emotion">"이걸 왜 여기 있다고 아무도 안 알려줬지?"</span>
-            </div>
-          </div>
-          <div class="sc-solution">
-            <div class="sc-solution-title">✅ 위드버디가 해결한 것</div>
-            정보 분산 문제 해결 + 선배 리소스 절약 + 신입 자기해결 능력 향상
-          </div>
-        </div>
-      </div>
-
-      <!-- 시나리오 3 -->
-      <div class="scenario-card">
-        <div class="sc-header">
-          <div class="sc-icon sc-icon-m">📊</div>
-          <div>
-            <div class="sc-persona">팀장 박성민 (38세, 개발팀)</div>
-            <div class="sc-title">바쁜 와중에 신입 상태를<br>파악해야 하는 상황</div>
-          </div>
-        </div>
-        <div class="sc-body">
-          <div class="sc-step">
-            <div class="sc-num sc-num-m">1</div>
-            <div class="sc-text">
-              중요한 프로젝트 마감 주. <strong>신입 3명의 상태를 파악</strong>해야 하지만 시간이 없음.<br>
-              <span class="sc-emotion">"일일이 불러서 물어볼 수가 없는 상황."</span>
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-m">2</div>
-            <div class="sc-text">
-              월요일 아침 슬랙에서 <strong>AI 주간 리포트 알림 수신</strong>.<br>
-              신입별 이번 주 활동·질문·진척도 요약 확인.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-m">3</div>
-            <div class="sc-text">
-              김지원이 같은 질문을 3번 반복한 것을 발견.<br>
-              <strong>미등록 질문 리스트</strong>에서 해당 항목 확인.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-m">4</div>
-            <div class="sc-text">
-              관련 담당자에게 <strong>슬랙으로 답변 요청</strong> 전송.<br>
-              <span class="sc-emotion">"5분 만에 처리 완료. 프로젝트에 집중할 수 있다."</span>
-            </div>
-          </div>
-          <div class="sc-solution sc-solution mgr">
-            <div class="sc-solution-title">✅ 위드버디가 해결한 것</div>
-            팀장 시간 절약 + 신입 이슈 조기 발견 + 슬랙 연동으로 빠른 처리
-          </div>
-        </div>
-      </div>
-
-      <!-- 시나리오 4 -->
-      <div class="scenario-card">
-        <div class="sc-header">
-          <div class="sc-icon sc-icon-n">📈</div>
-          <div>
-            <div class="sc-persona">신입사원 박소연 (31세, 경력직)</div>
-            <div class="sc-title">성장하고 있는지 불안한<br>3개월차 경력직 신입</div>
-          </div>
-        </div>
-        <div class="sc-body">
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">1</div>
-            <div class="sc-text">
-              입사 3개월차. 업무는 어느 정도 익숙해졌지만 <strong>잘 하고 있는 건지 알 수 없음</strong>.<br>
-              <span class="sc-emotion">"경력직인데 이 정도 성과면 괜찮은 건지 모르겠어."</span>
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">2</div>
-            <div class="sc-text">
-              위드버디 <strong>홈 대시보드</strong>에서 3개월 진척도 확인.<br>
-              완료한 온보딩 항목, 질문 수 추이, 업무 기록 수 시각화.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">3</div>
-            <div class="sc-text">
-              <strong>AI 주간 리포트</strong>로 이번 달 성장 포인트 확인.<br>
-              "지난달 대비 질문 응답 이해도 32% 향상" 등 구체적 피드백.
-            </div>
-          </div>
-          <div class="sc-step">
-            <div class="sc-num sc-num-n">4</div>
-            <div class="sc-text">
-              <strong>주간 회고</strong> 작성 후 다음 목표 설정.<br>
-              <span class="sc-emotion">"숫자로 보이니까 확실히 성장하고 있구나. 불안감이 줄었어."</span>
-            </div>
-          </div>
-          <div class="sc-solution">
-            <div class="sc-solution-title">✅ 위드버디가 해결한 것</div>
-            막연한 불안감 해소 + 데이터 기반 성장 가시화 + 자기주도 목표 설정 지원
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-</div><!-- /container -->
 
-<!-- FOOTER -->
-<div class="footer">
-  <div class="footer-logo">위드버디 (WithBuddy)</div>
-  <div>UX Research · Persona Document v2 · 페르소나 6개 (신입 4 + 팀장 2) · 시나리오 4개</div>
-</div>
+  <!-- ===== TAB 5: API ===== -->
+  <div class="panel" id="tab-api">
+    <div class="eyebrow">// 04. API 명세 읽기</div>
+    <h2 class="sec-title"><span class="num">#04</span> API 명세서 — 이렇게 읽어!</h2>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-mint"></div> API가 뭐야? — 진짜 쉬운 비유</div>
+      <div class="explain-box">
+        🍕 <strong>피자 주문 전화</strong>에 비유하면:<br><br>
+        API = 피자집에 전화하는 방법<br>
+        URL = 피자집 전화번호<br>
+        요청 (Request) = 내가 하는 주문 ("페퍼로니 피자 1판 주세요")<br>
+        응답 (Response) = 피자집이 주는 답변 ("네, 30분 뒤에 배달됩니다")<br><br>
+        <strong>HTTP 메서드</strong>는 "어떤 종류의 요청인지" 알려주는 거야:<br>
+        <span class="highlight">GET</span> = 달라고 요청 (메뉴판 주세요)<br>
+        <span class="highlight">POST</span> = 새로 만들어 달라고 요청 (주문이요!)<br>
+        <span class="highlight">PUT</span> = 기존 것 수정해 달라고 요청 (치즈 추가해주세요)<br>
+        <span class="highlight">DELETE</span> = 삭제해 달라고 요청 (주문 취소요!)
+      </div>
+    </div>
+
+    <div class="api-group">
+      <div class="api-group-title">🔐 인증 API</div>
+
+      <div class="api-item" onclick="toggleApi(this)">
+        <div class="api-header">
+          <span class="method POST">POST</span>
+          <span class="api-path">/api/v1/auth/login</span>
+          <span class="api-desc">로그인</span>
+          <span class="api-arrow">▼</span>
+        </div>
+        <div class="api-detail">
+          <div class="explain-box" style="margin-top:12px;">
+            사용자가 <strong>회사코드 + 사번 + 이름</strong>을 보내면, 서버가 확인하고 <strong>accessToken(입장권)</strong>을 발급해줘.
+          </div>
+          <p style="font-size:.8rem; color:var(--muted); margin-top:16px; margin-bottom:6px;">📤 요청 Body (프론트엔드가 보내는 데이터):</p>
+          <div class="code-block">
+{
+  <span class="code-key">"companyCode"</span>: <span class="code-str">"1001"</span>,      <span class="code-comment">// 회사 식별 코드</span>
+  <span class="code-key">"employeeNumber"</span>: <span class="code-str">"20260001"</span>, <span class="code-comment">// 사번</span>
+  <span class="code-key">"name"</span>: <span class="code-str">"김지원"</span>           <span class="code-comment">// 이름</span>
+}
+          </div>
+          <p style="font-size:.8rem; color:var(--muted); margin-top:14px; margin-bottom:6px;">📥 응답 (200 OK — 로그인 성공):</p>
+          <div class="code-block">
+{
+  <span class="code-key">"accessToken"</span>: <span class="code-str">"eyJhbGciOiJIUzI1NiIs..."</span>, <span class="code-comment">// 이걸 저장해둬야 해!</span>
+  <span class="code-key">"user"</span>: {
+    <span class="code-key">"id"</span>: <span class="code-num">1</span>,
+    <span class="code-key">"companyName"</span>: <span class="code-str">"테크 주식회사"</span>,
+    <span class="code-key">"name"</span>: <span class="code-str">"김지원"</span>,
+    <span class="code-key">"hireDate"</span>: <span class="code-str">"2026-03-01"</span>  <span class="code-comment">// 입사일 — Nudge 계산에 씀!</span>
+  }
+}
+          </div>
+          <p style="font-size:.8rem; color:var(--muted); margin-top:14px; margin-bottom:6px;">❌ 응답 (401 — 로그인 실패):</p>
+          <div class="code-block">
+{
+  <span class="code-key">"code"</span>: <span class="code-str">"UNAUTHORIZED"</span>,
+  <span class="code-key">"message"</span>: <span class="code-str">"회사코드, 사번 또는 이름이 올바르지 않습니다"</span>
+}
+          </div>
+          <div class="info-box">
+            <span>💡</span>
+            <span>받은 <code style="font-family:var(--mono); font-size:.85em;">accessToken</code>은 localStorage에 저장하고, 이후 모든 API 요청 헤더에 <code style="font-family:var(--mono); font-size:.85em;">Authorization: Bearer {토큰}</code>으로 첨부해야 해!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="api-group">
+      <div class="api-group-title">💬 채팅 API</div>
+
+      <div class="api-item" onclick="toggleApi(this)">
+        <div class="api-header">
+          <span class="method GET">GET</span>
+          <span class="api-path">/api/v1/chat/messages</span>
+          <span class="api-desc">채팅 기록 조회</span>
+          <span class="api-arrow">▼</span>
+        </div>
+        <div class="api-detail">
+          <div class="explain-box" style="margin-top:12px;">
+            로그인한 사용자의 <strong>모든 채팅 기록</strong>을 시간 순서대로 불러와. 페이지 처음 들어왔을 때 호출!
+          </div>
+          <p style="font-size:.8rem; color:var(--muted); margin-top:14px; margin-bottom:6px;">📥 응답 (200 OK):</p>
+          <div class="code-block">
+{
+  <span class="code-key">"messages"</span>: [
+    {
+      <span class="code-key">"id"</span>: <span class="code-num">101</span>,
+      <span class="code-key">"senderType"</span>: <span class="code-str">"USER"</span>,         <span class="code-comment">// 내가 보낸 메시지</span>
+      <span class="code-key">"messageType"</span>: <span class="code-str">"user_question"</span>,
+      <span class="code-key">"content"</span>: <span class="code-str">"복지카드는 어떻게 신청하나요?"</span>
+    },
+    {
+      <span class="code-key">"id"</span>: <span class="code-num">102</span>,
+      <span class="code-key">"senderType"</span>: <span class="code-str">"BOT"</span>,          <span class="code-comment">// AI가 보낸 메시지</span>
+      <span class="code-key">"messageType"</span>: <span class="code-str">"rag_answer"</span>,   <span class="code-comment">// 문서 기반 답변 성공</span>
+      <span class="code-key">"content"</span>: <span class="code-str">"복지카드는 관련 안내 문서를 기준으로..."</span>
+    }
+  ]
+}
+          </div>
+          <div class="warn-box">
+            <span>⚠️</span>
+            <span><strong>senderType</strong>으로 말풍선 방향 결정! <code style="font-family:var(--mono);">USER</code> → 오른쪽, <code style="font-family:var(--mono);">BOT</code> → 왼쪽</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-item" onclick="toggleApi(this)">
+        <div class="api-header">
+          <span class="method POST">POST</span>
+          <span class="api-path">/api/v1/chat/messages</span>
+          <span class="api-desc">질문 전송</span>
+          <span class="api-arrow">▼</span>
+        </div>
+        <div class="api-detail">
+          <div class="explain-box" style="margin-top:12px;">
+            사용자가 질문을 보내면, 백엔드가 AI에게 전달하고 답변까지 받아서 <strong>질문 + 답변 둘 다</strong> 돌려줘.
+          </div>
+          <p style="font-size:.8rem; color:var(--muted); margin-top:14px; margin-bottom:6px;">📤 요청 Body:</p>
+          <div class="code-block">
+{
+  <span class="code-key">"content"</span>: <span class="code-str">"복지카드는 어떻게 신청하나요?"</span>
+}
+          </div>
+          <p style="font-size:.8rem; color:var(--muted); margin-top:14px; margin-bottom:6px;">📥 응답 (201 Created):</p>
+          <div class="code-block">
+{
+  <span class="code-key">"question"</span>: { <span class="code-comment">// 내가 보낸 질문 (저장된 버전)</span>
+    <span class="code-key">"id"</span>: <span class="code-num">201</span>,
+    <span class="code-key">"senderType"</span>: <span class="code-str">"USER"</span>,
+    <span class="code-key">"content"</span>: <span class="code-str">"복지카드는 어떻게 신청하나요?"</span>
+  },
+  <span class="code-key">"answer"</span>: { <span class="code-comment">// AI가 생성한 답변</span>
+    <span class="code-key">"id"</span>: <span class="code-num">202</span>,
+    <span class="code-key">"senderType"</span>: <span class="code-str">"BOT"</span>,
+    <span class="code-key">"messageType"</span>: <span class="code-str">"rag_answer"</span>, <span class="code-comment">// 또는 no_result, out_of_scope</span>
+    <span class="code-key">"content"</span>: <span class="code-str">"복지카드는 관련 안내 문서를..."</span>
+  }
+}
+          </div>
+          <div class="info-box">
+            <span>💡</span>
+            <span>이 API 응답을 받으면 <code style="font-family:var(--mono); font-size:.85em;">question</code>과 <code style="font-family:var(--mono); font-size:.85em;">answer</code> 둘 다 채팅 목록에 추가해줘야 해!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="api-item" onclick="toggleApi(this)">
+        <div class="api-header">
+          <span class="method GET">GET</span>
+          <span class="api-path">/api/v1/chat/quick-questions</span>
+          <span class="api-desc">빠른 질문 목록</span>
+          <span class="api-arrow">▼</span>
+        </div>
+        <div class="api-detail">
+          <div class="explain-box" style="margin-top:12px;">
+            채팅 화면 하단에 보여줄 <strong>추천 질문 버튼</strong> 목록. 버튼 클릭 시 그 content를 POST /chat/messages로 그냥 전송하면 돼!
+          </div>
+          <div class="code-block">
+{
+  <span class="code-key">"quickQuestions"</span>: [
+    { <span class="code-key">"content"</span>: <span class="code-str">"연차는 어떻게 신청하나요?"</span> },
+    { <span class="code-key">"content"</span>: <span class="code-str">"급여일이 언제인가요?"</span> },
+    { <span class="code-key">"content"</span>: <span class="code-str">"건강검진은 어떻게 받나요?"</span> }
+  ]
+}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="api-group">
+      <div class="api-group-title">👆 Nudge API</div>
+
+      <div class="api-item" onclick="toggleApi(this)">
+        <div class="api-header">
+          <span class="method GET">GET</span>
+          <span class="api-path">/api/v1/onboarding-suggestions/me</span>
+          <span class="api-desc">오늘의 Nudge 조회</span>
+          <span class="api-arrow">▼</span>
+        </div>
+        <div class="api-detail">
+          <div class="explain-box" style="margin-top:12px;">
+            오늘 날짜와 입사일을 비교해서 <strong>오늘 보여줄 Nudge 카드</strong>를 서버가 골라서 줘. 날짜 계산은 서버가 해!
+          </div>
+          <div class="code-block">
+{
+  <span class="code-key">"suggestions"</span>: [
+    {
+      <span class="code-key">"id"</span>: <span class="code-num">3</span>,
+      <span class="code-key">"title"</span>: <span class="code-str">"입사 1일차 안내"</span>,
+      <span class="code-key">"content"</span>: <span class="code-str">"복지 제도와 사내 규정 문서를 먼저 확인해보세요."</span>,
+      <span class="code-key">"dayOffset"</span>: <span class="code-num">1</span>  <span class="code-comment">// 입사 1일차에 보여주는 카드</span>
+    }
+  ]
+}
+          </div>
+          <div class="info-box">
+            <span>💡</span>
+            <span>빈 배열 <code style="font-family:var(--mono);">[]</code>이 오면 오늘 해당하는 Nudge가 없는 거야. 이때 "오늘은 새로운 안내가 없어요" 같은 빈 화면 처리 해줘야 해!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
+  <!-- ===== TAB 6: ERD ===== -->
+  <div class="panel" id="tab-erd">
+    <div class="eyebrow">// 05. ERD 읽기</div>
+    <h2 class="sec-title"><span class="num">#05</span> ERD — 데이터베이스 설계도 읽기</h2>
 
-</body></html>
+    <div class="card">
+      <div class="card-title"><div class="dot dot-yellow"></div> ERD가 뭐야?</div>
+      <div class="explain-box">
+        <strong>ERD (Entity Relationship Diagram)</strong> = 데이터베이스 설계도<br><br>
+        🗂️ 엑셀 스프레드시트를 상상해봐:<br>
+        "사용자" 시트가 있고, "채팅 메시지" 시트가 있고, "회사" 시트가 있어.<br>
+        ERD는 이 시트들이 <strong>어떤 컬럼으로 구성되고, 서로 어떻게 연결되는지</strong> 보여주는 거야.<br><br>
+        프론트엔드가 ERD를 보는 이유: "API에서 어떤 데이터를 받을 수 있는지" 파악하기 위해!
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <!-- companies -->
+      <div class="card">
+        <div class="card-title"><div class="dot dot-yellow"></div> companies — 회사 정보</div>
+        <p style="font-size:.82rem; color:var(--muted); margin-bottom:10px;">로그인 시 회사 식별에 사용. <code style="font-family:var(--mono); color:var(--mint);">company_code</code>가 핵심!</p>
+        <table class="erd-table">
+          <thead><tr><th>컬럼</th><th>타입</th><th>키</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">id</td><td class="col-type">int</td><td><span class="col-pk">PK</span></td><td class="col-desc">회사 고유 번호</td></tr>
+            <tr><td class="col-name">company_code</td><td class="col-type">varchar</td><td></td><td class="col-desc">회사 코드 (유일값, 로그인 시 사용)</td></tr>
+            <tr><td class="col-name">name</td><td class="col-type">varchar</td><td></td><td class="col-desc">회사 이름</td></tr>
+            <tr><td class="col-name">created_at</td><td class="col-type">datetime</td><td></td><td class="col-desc">생성일시</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- users -->
+      <div class="card">
+        <div class="card-title"><div class="dot dot-mint"></div> users — 사용자 정보</div>
+        <p style="font-size:.82rem; color:var(--muted); margin-bottom:10px;"><code style="font-family:var(--mono); color:var(--mint);">hire_date</code>가 Nudge 계산의 핵심! 로그인 응답에서 받아와.</p>
+        <table class="erd-table">
+          <thead><tr><th>컬럼</th><th>타입</th><th>키</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">id</td><td class="col-type">bigint</td><td><span class="col-pk">PK</span></td><td class="col-desc">사용자 고유 번호</td></tr>
+            <tr><td class="col-name">company_id</td><td class="col-type">bigint</td><td><span class="col-fk">FK</span></td><td class="col-desc">소속 회사 → companies.id 참조</td></tr>
+            <tr><td class="col-name">name</td><td class="col-type">varchar</td><td></td><td class="col-desc">사용자 이름</td></tr>
+            <tr><td class="col-name">employee_number</td><td class="col-type">varchar</td><td></td><td class="col-desc">사번</td></tr>
+            <tr><td class="col-name">hire_date</td><td class="col-type">date</td><td></td><td class="col-desc">입사일 (Nudge dayOffset 계산 기준!)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- chat_messages -->
+      <div class="card">
+        <div class="card-title"><div class="dot dot-blue"></div> chat_messages — 채팅 메시지</div>
+        <p style="font-size:.82rem; color:var(--muted); margin-bottom:10px;">채팅 UI의 핵심 데이터. <code style="font-family:var(--mono); color:var(--mint);">senderType</code>과 <code style="font-family:var(--mono); color:var(--mint);">messageType</code>으로 UI 결정!</p>
+        <table class="erd-table">
+          <thead><tr><th>컬럼</th><th>타입</th><th>키</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">id</td><td class="col-type">bigint</td><td><span class="col-pk">PK</span></td><td class="col-desc">메시지 고유 번호</td></tr>
+            <tr><td class="col-name">user_id</td><td class="col-type">bigint</td><td><span class="col-fk">FK</span></td><td class="col-desc">메시지 주인 → users.id</td></tr>
+            <tr><td class="col-name">sender_type</td><td class="col-type">varchar</td><td></td><td class="col-desc">USER / BOT (말풍선 방향 결정!)</td></tr>
+            <tr><td class="col-name">message_type</td><td class="col-type">varchar</td><td></td><td class="col-desc">user_question / rag_answer / no_result / out_of_scope / suggestion</td></tr>
+            <tr><td class="col-name">content</td><td class="col-type">text</td><td></td><td class="col-desc">실제 메시지 내용</td></tr>
+            <tr><td class="col-name">document_id</td><td class="col-type">bigint</td><td><span class="col-fk">FK</span></td><td class="col-desc">근거 문서 <span class="nullable">nullable</span></td></tr>
+            <tr><td class="col-name">suggestion_id</td><td class="col-type">bigint</td><td><span class="col-fk">FK</span></td><td class="col-desc">연결된 Nudge <span class="nullable">nullable</span></td></tr>
+            <tr><td class="col-name">created_at</td><td class="col-type">datetime</td><td></td><td class="col-desc">메시지 생성 시각</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- onboarding_suggestions -->
+      <div class="card">
+        <div class="card-title"><div class="dot dot-orange"></div> onboarding_suggestions — Nudge 데이터</div>
+        <p style="font-size:.82rem; color:var(--muted); margin-bottom:10px;"><code style="font-family:var(--mono); color:var(--mint);">day_offset</code>이 "입사 며칠 째에 보여줄지" 기준!</p>
+        <table class="erd-table">
+          <thead><tr><th>컬럼</th><th>타입</th><th>키</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">id</td><td class="col-type">bigint</td><td><span class="col-pk">PK</span></td><td class="col-desc">Nudge 고유 번호</td></tr>
+            <tr><td class="col-name">title</td><td class="col-type">varchar</td><td></td><td class="col-desc">Nudge 제목</td></tr>
+            <tr><td class="col-name">content</td><td class="col-type">text</td><td></td><td class="col-desc">Nudge 내용</td></tr>
+            <tr><td class="col-name">day_offset</td><td class="col-type">int</td><td></td><td class="col-desc">입사 후 노출 시점 (1 = 입사 1일차)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title"><div class="dot dot-purple"></div> 테이블 관계 요약</div>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:4px;">
+        <div class="relation-item">
+          <div class="rel-tables"><span class="rel-tbl">companies</span><span class="rel-sign">1 : N</span><span class="rel-tbl">users</span></div>
+          <div class="rel-desc">회사 하나에 여러 명의 직원 가능</div>
+        </div>
+        <div class="relation-item">
+          <div class="rel-tables"><span class="rel-tbl">users</span><span class="rel-sign">1 : N</span><span class="rel-tbl">chat_messages</span></div>
+          <div class="rel-desc">한 사람이 여러 개의 채팅 메시지 가능</div>
+        </div>
+        <div class="relation-item">
+          <div class="rel-tables"><span class="rel-tbl">onboarding_suggestions</span><span class="rel-sign">1 : N</span><span class="rel-tbl">chat_messages</span></div>
+          <div class="rel-desc">하나의 Nudge가 여러 메시지의 원본이 될 수 있음</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== TAB 7: FLOW ===== -->
+  <div class="panel" id="tab-flow">
+    <div class="eyebrow">// 06. 협업 흐름</div>
+    <h2 class="sec-title"><span class="num">#06</span> 실제 협업은 어떻게 이루어지나요?</h2>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-mint"></div> 로그인 시나리오 — 파트별 역할 분담</div>
+      <div class="token-flow">
+        <div class="tf-step">
+          <div class="tf-label">FRONTEND</div>
+          <div class="tf-title">사용자가 로그인 폼 작성 후 버튼 클릭</div>
+          <div class="tf-desc">회사코드 "1001", 사번 "20260001", 이름 "김지원" 입력값 수집</div>
+        </div>
+        <div class="tf-step">
+          <div class="tf-label">FRONTEND</div>
+          <div class="tf-title">POST /api/v1/auth/login 요청 보내기</div>
+          <div class="tf-desc">fetch() 또는 axios로 JSON body 전송. 버튼 비활성화 + 로딩 스피너 표시!</div>
+        </div>
+        <div class="tf-step be">
+          <div class="tf-label">BACKEND</div>
+          <div class="tf-title">companyCode로 DB에서 회사 조회</div>
+          <div class="tf-desc">companies 테이블에서 company_code = "1001" 검색</div>
+        </div>
+        <div class="tf-step db">
+          <div class="tf-label">DATABASE</div>
+          <div class="tf-title">회사 ID 찾으면 users 테이블에서 사용자 확인</div>
+          <div class="tf-desc">해당 company_id + employee_number + name 모두 일치하는 사용자 검색</div>
+        </div>
+        <div class="tf-step be">
+          <div class="tf-label">BACKEND</div>
+          <div class="tf-title">일치하면 accessToken 생성 후 응답 반환</div>
+          <div class="tf-desc">{ accessToken: "...", user: { name, hireDate, ... } } 형태로 프론트에 전달</div>
+        </div>
+        <div class="tf-step">
+          <div class="tf-label">FRONTEND</div>
+          <div class="tf-title">토큰 저장 + 메인 페이지로 이동</div>
+          <div class="tf-desc">localStorage.setItem('accessToken', ...) 저장 후 메인 페이지로 라우팅</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-orange"></div> 질문 전송 시나리오 — AI까지 연결되는 흐름</div>
+      <div class="token-flow">
+        <div class="tf-step">
+          <div class="tf-label">FRONTEND</div>
+          <div class="tf-title">사용자가 "복지카드는 어떻게 신청하나요?" 입력 후 전송</div>
+          <div class="tf-desc">입력창 비우기 + AI 로딩 애니메이션 표시 시작</div>
+        </div>
+        <div class="tf-step">
+          <div class="tf-label">FRONTEND</div>
+          <div class="tf-title">POST /api/v1/chat/messages 요청</div>
+          <div class="tf-desc">헤더에 Authorization: Bearer {accessToken} 첨부 필수!</div>
+        </div>
+        <div class="tf-step be">
+          <div class="tf-label">BACKEND</div>
+          <div class="tf-title">질문 저장 + AI 서버로 전달</div>
+          <div class="tf-desc">chat_messages에 user_question 저장 → /internal/ai/answer 내부 호출</div>
+        </div>
+        <div class="tf-step ai">
+          <div class="tf-label">AI SERVER</div>
+          <div class="tf-title">사내 문서 검색 후 답변 생성 (RAG)</div>
+          <div class="tf-desc">해당 회사 문서들 중 관련 내용 찾아서 답변 생성. messageType 결정 (rag_answer / no_result / out_of_scope)</div>
+        </div>
+        <div class="tf-step be">
+          <div class="tf-label">BACKEND</div>
+          <div class="tf-title">AI 답변 저장 + 프론트에 최종 응답</div>
+          <div class="tf-desc">{ question: {...}, answer: {...} } 형태로 반환</div>
+        </div>
+        <div class="tf-step">
+          <div class="tf-label">FRONTEND</div>
+          <div class="tf-title">질문 + 답변 화면에 추가</div>
+          <div class="tf-desc">로딩 애니메이션 종료 → 채팅 목록에 질문/답변 말풍선 추가 → 맨 아래로 스크롤</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-red"></div> 401 에러 처리 흐름 — 꼭 구현해야 해!</div>
+      <div class="explain-box">
+        <strong>TOKEN_EXPIRED</strong> (토큰 만료), <strong>TOKEN_MISSING</strong> (토큰 없음), <strong>INVALID_TOKEN</strong> (잘못된 토큰)을 받으면 → <strong>무조건 로그인 페이지로 이동!</strong><br><br>
+        이걸 처리 안 하면 사용자가 흰 화면 또는 에러만 보게 돼.
+      </div>
+      <div class="code-block" style="margin-top:12px;">
+<span class="code-comment">// API 요청 후 에러 처리 예시</span>
+<span class="code-key">const</span> response = <span class="code-key">await</span> <span class="code-val">fetch</span>(<span class="code-str">'/api/v1/chat/messages'</span>, { ... });
+
+<span class="code-key">if</span> (response.status === <span class="code-num">401</span>) {
+  <span class="code-key">const</span> error = <span class="code-key">await</span> response.<span class="code-val">json</span>();
+  <span class="code-key">const</span> expiredCodes = [<span class="code-str">'TOKEN_EXPIRED'</span>, <span class="code-str">'TOKEN_MISSING'</span>, <span class="code-str">'INVALID_TOKEN'</span>, <span class="code-str">'USER_NOT_FOUND'</span>];
+
+  <span class="code-key">if</span> (expiredCodes.<span class="code-val">includes</span>(error.code)) {
+    <span class="code-comment">// 저장된 토큰 삭제 + 로그인 페이지로 이동</span>
+    <span class="code-key">localStorage</span>.<span class="code-val">removeItem</span>(<span class="code-str">'accessToken'</span>);
+    window.location.<span class="code-val">href</span> = <span class="code-str">'/login'</span>;
+  }
+}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="dot dot-purple"></div> Git 협업 흐름 — 기본만 알자!</div>
+      <div class="explain-box">
+        <strong>브랜치 전략 (보통 이렇게 써):</strong><br><br>
+        <span class="highlight">main</span> = 완성된 배포용 코드. 함부로 직접 수정 금지!<br>
+        <span class="highlight">develop</span> = 개발 중인 코드. 여기서 합쳐.<br>
+        <span class="highlight">feature/login</span> = 내가 작업하는 기능별 브랜치<br><br>
+        <strong>작업 순서:</strong><br>
+        1️⃣ <code style="font-family:var(--mono); font-size:.85em;">git checkout -b feature/login</code> (내 브랜치 만들기)<br>
+        2️⃣ 코드 작성<br>
+        3️⃣ <code style="font-family:var(--mono); font-size:.85em;">git add . && git commit -m "feat: 로그인 폼 구현"</code><br>
+        4️⃣ GitHub에 Push<br>
+        5️⃣ Pull Request(PR) 올려서 팀원 리뷰 받기<br>
+        6️⃣ 리뷰 완료 후 develop에 Merge
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<footer>
+  <p>📚 <strong>WithBuddy</strong> — 협업 파트 완전 이해 가이드</p>
+  <p style="margin-top:6px; font-size:.78rem;">API 명세서 v1.5.0 · ERD v1.2 기반 · 초보자 맞춤 정리</p>
+</footer>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // API accordion
+  function toggleApi(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.api-item').forEach(item => item.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+</script>
+</body>
+</html>
